@@ -4,3 +4,4 @@ task 2:  write a script that changes the working directory to the user's home di
 task 3:  display current directory contents in a long format.
 task 4:  display current idirectory contents, including hidden files (starting with .).
 task 5:  display current directory contents as numbers and user.
+task 6:  creating a directory.
