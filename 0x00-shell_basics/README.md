@@ -7,3 +7,4 @@ task 5:  display current directory contents as numbers and user.
 task 6:  creating a directory.
 task 7:  moving files to other directory.
 task 8:  deleting file form directory.
+task 9:  dleting a directory.
