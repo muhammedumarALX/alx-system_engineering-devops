@@ -9,4 +9,5 @@ task 7:  moving files to other directory.
 task 8:  deleting file form directory.
 task 9:  dleting a directory.
 task 10: going back to previous directory.
-task 11: view all files 
+task 11: view all files
+task 12: to print a file. 
