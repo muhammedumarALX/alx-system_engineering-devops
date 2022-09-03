@@ -1,2 +1,2 @@
 #!/bim/bash
-mv [[:upper]]* ~/tmp/u
+mv [[:upper:]]* /tmp/u
