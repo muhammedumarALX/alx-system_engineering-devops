@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#Bash script that kills a peocess
+pgrep -f 7-higherlander | xargs kill -9
