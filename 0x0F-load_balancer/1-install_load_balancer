@@ -17,7 +17,7 @@ backend my_backend
 " >> /etc/haproxy/haproxy.cfg
 
 # Enable HAProxy
-sudo systemctl enable haproxy
+sudo sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/haproxy
 
 # Restart HAProxy
-sudo systemctl restart haproxy
+sudo service restart haproxy
