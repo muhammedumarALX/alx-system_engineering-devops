@@ -6,11 +6,11 @@ sudo apt-get install -y haproxy
 
 # Configure HAProxy
 echo "
-frontend my_frontend
+frontend http_front
 	bind *:80
-	default_backend my_backend
+	default_backend http_back
 
-backend my_backend
+backend http_back
 	balance roundrobin
 	server 145621-web-01 34.229.189.48:80 check
 	server 145621-web-02 54.152.203.53:80 check
