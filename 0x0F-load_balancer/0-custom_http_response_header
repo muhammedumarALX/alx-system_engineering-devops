@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Configure Nginx server
+
+# Istall nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Creating Sample Page
+echo "Hello World!" > /var/www/html/index.html
+
+# Add the following configuration to exosting server block
+string_for_replacement="server_name_;\n\trewrite ^\/redirect_me https:\/\/www.instagram.com permanent;"
+sudo sed -i "s/server_name_;/$string_for_replacement/" /etc/nginx/sites-enabled/sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/defaultsudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
+
+# code for error page and redirect error 404
+echo "Ceci niest pas une page" > /var/www/html/404.html
+string_for_replacement="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/listen 80 default_server;/$string_for_replacement/" /etc/nginx/sites-available/default
+
+# code for http_response_header
+sudo sed -i '/^http {/a \\tadd_header X-Served-By $hostname;' /etc/nginx/nginx.conf
+
+# Reload Nginx
+sudo service nginx restart
