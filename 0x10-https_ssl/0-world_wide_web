@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Script that configures a domain so that subdomain points to the load balancer
+
+my_func ()
+{
+	res=$(dig "$2.$1" | grep -A1 "ANSWER SECTION" | tail -1)
+	echo "$2 $res" | awk '{print "The subdomain " $1 " is a " $5 " record and points to " $6}'
+}
+
+if [ $# -eq 1 ]; then
+	my_func "$1" "www"
+	my_func "$1" "lb-01"
+	my_func "$1" "web-01"
+	my_func "$1" "web-02"
+elif [ $# -eq 2 ]; then
+	my_func "$1" "$2"
+fi
