@@ -9,7 +9,7 @@ if __name__ == "__main__":
     employee_id = int(sys.argv[1])
     user_endpoint = "{}users/{}".format(base_url, employee_id)
     user = requests.get(user_endpoint).json()
-    empolyee_name = user["name"]
+    employee_name = user["name"]
 
     todo_endpoint = "{}todos?userId={}".format(base_url, employee_id)
     todo_list = requests.get(todo_endpoint).json()
@@ -19,6 +19,6 @@ if __name__ == "__main__":
     total = len(todo_list)
 
     print("Employee {} is done with tasks({}/{}):"
-          .format(empolyee_name, completed, total))
+          .format(employee_name, completed, total))
     for task in completed_task:
         print("\t {}".format(task["title"]))
