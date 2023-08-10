@@ -6,40 +6,37 @@
 import requests
 
 
-def count_words(subreddit, word_list, after=None, word_counts=None):
-    if word_counts is None:
-        word_counts = {}
+def count_words(subreddit, word_list, array=None, after=None):
+    if array is None:
+        array = {}
 
     url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
     header = {"User-Agent": "Mozilla/5.0"}
 
-    params = {}
-    if after:
-        params["after"] = after
+    params = {"after": after}
 
-    response = requests.get(url, headers=header, params=params,
-                            allow_redirects=False)
+    data = requests.get(url, headers=header, params=params,
+                        allow_redirects=False)
 
-    if response.status_code == 200:
-        data = response.json().get("data")
-        after = data.get("after")
+    if data.status_code == 200:
+        results = data.json().get("data")
+        after = results.get("after")
 
-        for item in data.get("children"):
-            title = item.get("data").get("title")
-            lowercase_title = title.lower()
+        for entry in results.get("children"):
+            split = entry.get("data").get("title").lower().split()
+
             for word in word_list:
-                if word in lowercase_title:
-                    if word in word_counts:
-                        word_counts[word] += lowercase_title.count(word)
+                if word.lower() in split:
+                    times = len([t for t in split if t == word.lower()])
+                    if array.get(word) is None:
+                        array[word] = times
                     else:
-                        word_counts[word] = lowercase_title.count(word)
+                        array[word] += times
 
         if after:
-            return count_words(subreddit, word_list, after, word_counts)
+            return count_words(subreddit, word_list, array, after)
         else:
-            sorted_counts = sorted(word_counts.items(),
-                                   key=lambda x: (-x[1], x[0]))
+            sorted_counts = sorted(array.items(),
+                                   key=lambda x: (-x[1], x[0].lower()))
             for word, count in sorted_counts:
                 print("{}: {}".format(word.lower(), count))
-            return
-    return
