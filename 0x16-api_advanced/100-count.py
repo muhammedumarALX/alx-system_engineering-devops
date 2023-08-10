@@ -1,7 +1,18 @@
 #!/usr/bin/python3
-"""Write a recursive function that queries the Reddit API,
-    parses the title of all hot articles, and prints a
-    sorted count of given keywords.
+"""
+Count occurrences of given keywords in titles of
+eot articles from a subreddit.
+Args:
+    subreddit (str): The name of the subreddit to query.
+    word_list (list): A list of keywords to count
+    occurrences of.
+    word_counts (dict, optional): A dictionary to
+    store keyword counts. Default is None.
+    after (str, optional): A Reddit API parameter
+    for pagination. Default is None.
+
+Returns:
+    None
 """
 import requests
 
@@ -16,7 +27,7 @@ def count_words(subreddit, word_list, after=None, word_counts=None):
     params = {"after": after}
 
     response = requests.get(url, headers=header, params=params,
-                        allow_redirects=False)
+                            allow_redirects=False)
 
     if response.status_code == 200:
         data = response.json().get("data")
