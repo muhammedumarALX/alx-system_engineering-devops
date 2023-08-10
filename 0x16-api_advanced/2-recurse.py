@@ -5,23 +5,36 @@
 import requests
 
 
-def recurse(subreddit, hot_list=[], after=""):
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
+def recurse(subreddit, hot_list=None, after=None):
+    if hot_list is None:
+        hot_list = []
+
+    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
     header = {"User-Agent": "Mozilla/5.0"}
-    params = {"after": after}
-    data = requests.get(url, headers=header, params=params,
-                        allow_redirects=False)
 
-    if data.status_code == 200:
-        response = data.json().get("data")
-        after = response.get("after")
+    params = {}
+    if after:
+        params["after"] = after
 
-        for item in response.get("children"):
-            hot_list.append(item.get("data").get("title"))
+    response = requests.get(url, headers=header, params=params,
+                            allow_redirects=False)
 
-        if after:
-            return recurse(subreddit, hot_list, after)
-
-        return hot_list
-
-    return None
+    if response.status_code == 200:
+        data = response.json().get("data")
+        if data:
+            children = data.get("children")
+            if children:
+                for item in children:
+                    title = item.get("data").get("title")
+                    hot_list.append(title)
+                after = data.get("after")
+                if after:
+                    return recurse(subreddit, hot_list, after)
+                else:
+                    return hot_list
+            else:
+                return hot_list
+        else:
+            return hot_list
+    else:
+        return None
